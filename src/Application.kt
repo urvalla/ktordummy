@@ -1,5 +1,7 @@
 package com.fridayhack
 
+import com.fridayhack.models.Page
+import com.fridayhack.models.Pages
 import com.fridayhack.service.DatabaseFactory
 import io.ktor.application.*
 import io.ktor.response.*
@@ -23,6 +25,8 @@ import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.*
 import io.ktor.client.features.logging.*
+import io.ktor.http.HttpStatusCode.Companion.NotFound
+import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -163,6 +167,20 @@ fun Application.module(testing: Boolean = false) {
 
         get("/json/gson") {
             call.respond(mapOf("hello" to "world"))
+        }
+
+        get("/pages/{pageSlug}") {
+            val pageSlug = call.parameters["pageSlug"] ?: ""
+
+            val page = transaction {
+                Page.find { Pages.slug eq pageSlug }.firstOrNull()
+            }
+
+            if (page != null) {
+                call.respondText(page.body, ContentType.Text.Html)
+            } else {
+                call.respond(NotFound)
+            }
         }
     }
 }
