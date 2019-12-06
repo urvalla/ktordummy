@@ -1,5 +1,6 @@
 package com.fridayhack
 
+import com.fridayhack.service.DatabaseFactory
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -96,6 +97,8 @@ fun Application.module(testing: Boolean = false) {
         }
         */
     }
+
+    DatabaseFactory.init()
 
     routing {
         get("/") {
