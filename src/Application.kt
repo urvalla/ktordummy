@@ -1,18 +1,15 @@
 package com.fridayhack
 
-import com.fridayhack.models.Page
-import com.fridayhack.models.Pages
-import com.fridayhack.service.DatabaseFactory
+import com.fridayhack.models.*
+import com.fridayhack.service.*
 import io.ktor.application.*
 import io.ktor.response.*
-import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.html.*
 import kotlinx.html.*
 import freemarker.cache.*
 import io.ktor.freemarker.*
-import io.ktor.content.*
 import io.ktor.http.content.*
 import io.ktor.locations.*
 import io.ktor.sessions.*
@@ -22,7 +19,6 @@ import io.ktor.gson.*
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.client.features.json.*
-import io.ktor.client.request.*
 import kotlinx.coroutines.*
 import io.ktor.client.features.logging.*
 import io.ktor.http.HttpStatusCode.Companion.NotFound
@@ -102,7 +98,7 @@ fun Application.module(testing: Boolean = false) {
         */
     }
 
-    DatabaseFactory.init()
+    DatabaseFactory.init(databaseConfigFromEnv())
 
     routing {
         get("/") {
