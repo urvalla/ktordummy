@@ -4,6 +4,7 @@ buildscript {
     }
     
     dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -14,6 +15,8 @@ apply plugin: 'application'
 group 'com.fridayhack'
 version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
+
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
